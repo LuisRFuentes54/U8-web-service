@@ -1,0 +1,33 @@
+{
+  "name": "u8-web-service",
+  "version": "1.0.0",
+  "description": "Código fuente de la actividad \"Diseño e implementación de un servicio web\" perteneciente a la Unidad 8 del curso de Sistemas Distribuidos.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuisRFuentes54/U8-web-service.git"
+  },
+  "keywords": [
+    "js",
+    "web-service"
+  ],
+  "author": "Luis Fuentes <luisrf0540@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LuisRFuentes54/U8-web-service/issues"
+  },
+  "homepage": "https://github.com/LuisRFuentes54/U8-web-service#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
+  }
+}
