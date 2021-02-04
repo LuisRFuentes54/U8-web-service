@@ -15,7 +15,11 @@
     "js",
     "web-service"
   ],
-  "author": "Luis Fuentes <luisrf0540@gmail.com>",
+  "contributors":[
+    "Carolina Patiño <cdpatino.17@est.ucab.edu.ve>",
+    "Luis Fuentes <lrfuentes.17@est.ucab.edu.ve>",
+    "David Monroy <djmonroy.17@est.ucab.edu.ve>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/LuisRFuentes54/U8-web-service/issues"
