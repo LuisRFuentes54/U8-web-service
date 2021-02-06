@@ -1,29 +1,29 @@
 const orm = require("sequelize");
 const connection = require("../connection");
 const status = require("../../utils/status");
-const School = require("./school.model");
+const Section = require("./section.model");
 
-const Faculty = connection.define("faculty", {
+const School = connection.define("school", {
     id: {
-        field: "f_id",
+        field: "sc_id",
         type: orm.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         unique: true,
     },
     name: {
-        field: "f_name",
+        field: "sc_name",
         type: orm.STRING,
         length: 40,
         allowNull: false
     },
     description: {
-        field: "f_description",
+        field: "sc_description",
         type: orm.TEXT,
         allowNull: true,
     },
     status: {
-        field: "f_status",
+        field: "sc_status",
         type: orm.STRING,
         length: 8,
         defaultValue: status.enable,
@@ -36,22 +36,27 @@ const Faculty = connection.define("faculty", {
         }
     },
     createdDate: {
-        field: "f_created_date",
+        field: "sc_created_date",
         type: orm.DATE,
         defaultValue: new Date(),
         allowNull: false,
     },
     deletedDate: {
-        field: "f_deleted_date",
+        field: "sc_deleted_date",
         type: orm.DATE,
         allowNull: true,
     },
+    fkFaculty: {
+        field: "sc_f_fk_id",
+        type: orm.INTEGER,
+        allowNull: false
+    }
 }, {
     freezeTableName: true,
     timestamps: false
 });
 
-Faculty.hasMany(School, { foreignKey: "fkFaculty", sourceKey: "id" });
-School.belongsTo(Faculty, { foreignKey: "fkFaculty", sourceKey: "id" });
+School.hasMany(Section, { foreignKey: "fkSchool", sourceKey: "id" });
+Section.belongsTo(School, { foreignKey: "fkSchool", sourceKey: "id" });
 
-module.exports = Faculty;
+module.exports = School;

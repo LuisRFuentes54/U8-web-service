@@ -1,29 +1,37 @@
 const orm = require("sequelize");
 const connection = require("../connection");
 const status = require("../../utils/status");
-const School = require("./school.model");
+const Enrollment = require("./enrollment.model");
 
-const Faculty = connection.define("faculty", {
+const Person = connection.define("person", {
     id: {
-        field: "f_id",
+        field: "p_id",
         type: orm.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         unique: true,
     },
-    name: {
-        field: "f_name",
+    ci: {
+        field: "p_ci",
         type: orm.STRING,
-        length: 40,
-        allowNull: false
+        length: 10,
+        allowNull: false,
+        unique: true
     },
-    description: {
-        field: "f_description",
-        type: orm.TEXT,
-        allowNull: true,
+    firstName: {
+        field: "p_first_name",
+        type: orm.STRING,
+        length: 50,
+        allowNull: false,
+    },
+    lastName: {
+        field: "p_last_name",
+        type: orm.STRING,
+        length: 50,
+        allowNull: false,
     },
     status: {
-        field: "f_status",
+        field: "p_status",
         type: orm.STRING,
         length: 8,
         defaultValue: status.enable,
@@ -36,13 +44,13 @@ const Faculty = connection.define("faculty", {
         }
     },
     createdDate: {
-        field: "f_created_date",
+        field: "p_created_date",
         type: orm.DATE,
         defaultValue: new Date(),
         allowNull: false,
     },
     deletedDate: {
-        field: "f_deleted_date",
+        field: "p_deleted_date",
         type: orm.DATE,
         allowNull: true,
     },
@@ -51,7 +59,7 @@ const Faculty = connection.define("faculty", {
     timestamps: false
 });
 
-Faculty.hasMany(School, { foreignKey: "fkFaculty", sourceKey: "id" });
-School.belongsTo(Faculty, { foreignKey: "fkFaculty", sourceKey: "id" });
+Person.hasMany(Enrollment, { foreignKey: "fkPerson", sourceKey: "id" });
+Enrollment.belongsTo(Person, { foreignKey: "fkPerson", sourceKey: "id" });
 
-module.exports = Faculty;
+module.exports = Person;
