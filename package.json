@@ -15,7 +15,7 @@
     "js",
     "web-service"
   ],
-  "contributors":[
+  "contributors": [
     "Carolina Patiño <cdpatino.17@est.ucab.edu.ve>",
     "Luis Fuentes <lrfuentes.17@est.ucab.edu.ve>",
     "David Monroy <djmonroy.17@est.ucab.edu.ve>"
@@ -28,6 +28,9 @@
   "dependencies": {
     "express": "^4.17.1",
     "morgan": "^1.10.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.5.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
