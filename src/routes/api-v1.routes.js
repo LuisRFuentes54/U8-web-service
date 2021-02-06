@@ -1,4 +1,7 @@
 const express = require("express");
-const apiv1 = express.Router();
+const routerFaculties = require("../services/faculties/faculties.routes");
+const router = express.Router();
 
-module.exports = apiv1;
+router.use('/faculties', routerFaculties);
+
+module.exports = router;

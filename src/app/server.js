@@ -14,9 +14,9 @@ app.use(express.json());
 
 // ROUTES
 app.get('/', (req, res) => {
-    res.json("The web services is working");
+    res.json("The web service is working");
 });
-app.use('api/v1', routerAPIv1);
+app.use('/api/v1', routerAPIv1);
 
 // ERROR HANDLER
 app.use(function(err, req, res, next) {
