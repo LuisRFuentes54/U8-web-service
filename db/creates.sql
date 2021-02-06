@@ -1,5 +1,5 @@
 CREATE TABLE faculty(
-    f_id                SERIAL          PRIMARY KEY,
+    f_id                SERIAL          PRIMARY KEY UNIQUE,
     f_name              VARCHAR(40)     NOT NULL,
     f_description       TEXT,
     f_status            VARCHAR(8)      NOT NULL    CHECK (f_status = 'enable' OR f_status = 'disable')  DEFAULT 'enable',
@@ -8,7 +8,7 @@ CREATE TABLE faculty(
 );
 
 CREATE TABLE school(
-    sc_id                SERIAL          PRIMARY KEY,
+    sc_id                SERIAL          PRIMARY KEY UNIQUE,
     sc_name              VARCHAR(40)     NOT NULL,
     sc_description       TEXT,
     sc_status            VARCHAR(8)      NOT NULL    CHECK (sc_status = 'enable' OR sc_status = 'disable')  DEFAULT 'enable',
@@ -18,7 +18,7 @@ CREATE TABLE school(
 );
 
 CREATE TABLE section(
-    se_id                SERIAL          PRIMARY KEY,
+    se_id                SERIAL          PRIMARY KEY UNIQUE,
     se_name              VARCHAR(40)     NOT NULL,
     se_description       TEXT,
     se_status            VARCHAR(8)      NOT NULL    CHECK (se_status = 'enable' OR se_status = 'disable')  DEFAULT 'enable',
@@ -34,8 +34,8 @@ CREATE TABLE section(
 );
 
 CREATE TABLE person(
-    p_id                SERIAL          PRIMARY KEY,
-    p_ci                VARCHAR(10)     NOT NULL,
+    p_id                SERIAL          PRIMARY KEY UNIQUE,
+    p_ci                VARCHAR(10)     NOT NULL UNIQUE,
     p_first_name        VARCHAR(50)     NOT NULL,
     p_last_name         VARCHAR(50)     NOT NULL,
     p_status            VARCHAR(8)      NOT NULL    CHECK (p_status = 'enable' OR p_status = 'disable')  DEFAULT 'enable',
@@ -44,7 +44,7 @@ CREATE TABLE person(
 );
 
 CREATE TABLE enrollment(
-    e_id                SERIAL          PRIMARY KEY,
+    e_id                SERIAL          PRIMARY KEY UNIQUE,
     e_status            VARCHAR(8)      NOT NULL    CHECK (e_status = 'enable' OR e_status = 'disable')  DEFAULT 'enable',
     e_created_date      TIMESTAMP       NOT NULL    DEFAULT NOW(),
     e_deleted_date      TIMESTAMP,
