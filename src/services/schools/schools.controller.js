@@ -91,7 +91,7 @@ controller.delete = async (req, res, next) => {
 controller.update = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const { name, description } = req.body;
+        const { name, description, fkFaculty } = req.body;
         logger.info(`[${context}]: Updating school [id:${id}]`);
         const schoolUpdate = await school.findOne({
             where: {
@@ -110,6 +110,8 @@ controller.update = async (req, res, next) => {
                 schoolUpdate.name = name;
             if (description)
                 schoolUpdate.description = description;
+            if (fkFaculty)
+                schoolUpdate.fkFaculty = fkFaculty;
             await schoolUpdate.save();
             res.json({
                 resp: "school updated",

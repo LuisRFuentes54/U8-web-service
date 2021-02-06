@@ -26,7 +26,7 @@ CREATE TABLE section(
     se_deleted_date      TIMESTAMP,
     se_uc                INTEGER         NOT NULL,
     se_semester          INTEGER         NOT NULL,
-    se_type              VARCHAR(9)      NOT NULL    CHECK (se_type = 'mandalory' OR se_type = 'elective'),
+    se_type              VARCHAR(9)      NOT NULL    CHECK (se_type = 'mandatory' OR se_type = 'elective'),
     se_ht                NUMERIC(4,2)    NOT NULL,
     se_hp                NUMERIC(4,2)    NOT NULL,
     se_hl                NUMERIC(4,2)    NOT NULL,

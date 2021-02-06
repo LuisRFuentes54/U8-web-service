@@ -74,7 +74,7 @@ const Section = connection.define("section", {
         type: orm.DECIMAL(2,2),
         allowNull: false
     },
-    praticeHours: {
+    practiceHours: {
         field: "se_hp",
         type: orm.DECIMAL(2,2),
         allowNull: false
