@@ -7,5 +7,7 @@ router.get('/:id', sectionsController.getOne);
 router.post('/', sectionsController.create);
 router.delete('/:id', sectionsController.delete);
 router.put('/:id', sectionsController.update);
+router.post('/:ids/persons/:idp', sectionsController.addPerson);
+router.delete('/:ids/persons/:idp', sectionsController.deletePerson);
 
 module.exports = router;
