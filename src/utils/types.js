@@ -1,6 +1,6 @@
 const types = {
     section: {
-        mandalory: "mandalory",
+        mandatory: "mandatory",
         elective: "elective"
     },
     enrollment: {

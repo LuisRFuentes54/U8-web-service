@@ -64,7 +64,7 @@ const Section = connection.define("section", {
         allowNull: false,
         validate: {
             isIn: {
-                args: [[types.section.mandalory, types.section.elective]],
+                args: [[types.section.mandatory, types.section.elective]],
                 msg: "Section type must be mandalory or elective",
             }
         }
