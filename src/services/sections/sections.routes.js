@@ -86,6 +86,110 @@ const router = express.Router();
  *          description: Listado de secciones activas
  *        404:
  *          description: Section not found
+ * 
+ *   /api/v1/sections/{ids}/persons/{idp}:
+ *   
+ *     post:
+ *       tags:
+ *         - sections
+ *       summary: Agrega una persona a una sección
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *        - in: path
+ *        
+ *          name: ids
+ *          description: ID de la sección en la que desea agregar una persona
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *        - in: path
+ *          name: idp
+ *          description: ID de la persona a la que desea inscribir
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *        - in: body
+ *          name: type
+ *          description: Indica si es estudiante o profesor
+ *          schema:
+ *            $ref: '#/definitions/Type'
+ *       responses:
+ *         200:
+ *           description: Person registered in the section
+ *         500:
+ *           description: Person is already registered in the section
+ *         404: 
+ *           description: Section not found - Person not found
+ *     
+ *     delete:
+ *     
+ *       tags:
+ *         - sections
+ *       summary: Elimina a un persona de una seccion
+ *       parameters:
+ *        - in: path
+ *          name: ids
+ *          description: ID de la sección a la cual pertenece la persona
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *        - in: path
+ *          name: idp
+ *          description: ID de la persona a eliminar
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *       responses:
+ *         200:
+ *           description: Person removed from section
+ *         404:
+ *           description: The person is not already registered in the section
+ * 
+ *   /api/v1/sections/students/{ids}:
+ *   
+ *     get:
+ *       tags:
+ *         - sections
+ *       summary: Listar los estudiantes de una sección
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *        - in: path
+ *        
+ *          name: ids
+ *          description: ID de la sección la cual se desea consultar
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *       responses:
+ *         200:
+ *           description: Lista los estudiantes de la sección
+ *         404: 
+ *           description: There aren't students in this section
+ * 
+ *   /api/v1/sections/teachers/{ids}:
+ *     get:
+ *       tags:
+ *         - sections
+ *       summary: Obtener el profesor de una sección
+ *       consumes:
+ *         - application/json
+ *       parameters:
+ *        - in: path
+ *        
+ *          name: ids
+ *          description: ID de la sección la cual se desea consultar
+ *          schema:
+ *            type: integer
+ *            minimum: 1
+ *       responses:
+ *         200:
+ *           description: Retorna el profesor de la sección
+ *         404: 
+ *           description: There isn't teacher in this section
+ *     
+ *     
  *
  * definitions:
  *  Section:
@@ -120,6 +224,16 @@ const router = express.Router();
  *        type: number
  *      fkSchool:
  *        type: integer
+ * 
+ *  Type:
+ *    type: object
+ *    required:
+ *      - type
+ *     
+ * 
+ *    properties:
+ *      type:
+ *        type: string
  */
 
 router.get('/', sectionsController.getAll);
