@@ -32,4 +32,4 @@ $ npm install
 $ npm run start
 ```
 ## Documentación del servicio
-Una vez ejecutado el web service, puede acceder a la ruta /api/v1/docs para encontrar la documentación del web service realizado
+Una vez ejecutado el web service, puede acceder a la ruta http://localhost:{PORT}/api/v1/api-docs/ para encontrar la documentación del web service realizado
