@@ -18,8 +18,7 @@ router.use('/persons', routerPersons);
 router.use("/api-docs", swaggerUI.serve);
 /**
  * @swagger
- *
- * /api/v1/api-docs:
+ * /api/v1/api-docs/:
  *   get:
  *     summary: Documentación de la API
  *     description: Documentación de la API con Swagger

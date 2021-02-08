@@ -11,5 +11,5 @@
     }
   },
   "basePath": "/",
-  "apis": ["./services/*/*.routes.js"]
+  "apis": ["./src/services/*/*.routes.js"]
 }
