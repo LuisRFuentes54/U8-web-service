@@ -4,6 +4,7 @@ const enrollment = require("../../database/models/enrollment.model");
 const person = require("../../database/models/person.model");
 const status = require("../../utils/status");
 const types = require("../../utils/types");
+const Person = require("../../database/models/person.model");
 
 const controller = {};
 const context = "sections Controller";
@@ -36,6 +37,62 @@ controller.getOne = async (req, res, next) => {
             logger.warn(`[${context}]: section not found`)
             res.status(404).json({
                 resp: "section not found",
+            });
+        }
+        else
+            res.json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+controller.getStudents = async (req, res, next) => {
+    try {
+        const idSection = req.params.ids;
+        logger.info(`[${context}]: Get students in section [${idSection}]`);
+        const result = await enrollment.findAll({
+            include:{ 
+               model: person,  
+            },
+            where: {
+                type: "student",
+                status: status.enable,
+                fkSection: idSection
+            }
+            
+        });
+        if (result.length === 0){
+            logger.warn(`[${context}]: There aren't students in this section`)
+            res.status(404).json({
+                resp: "There aren't students in this section",
+            });
+        }
+        else
+            res.json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+controller.getTeacher = async (req, res, next) => {
+    try {
+        const idSection = req.params.ids;
+        logger.info(`[${context}]: Get teacher in section [${idSection}]`);
+        const result = await enrollment.findAll({
+            include:{ 
+               model: person,  
+            },
+            where: {
+                type: "teacher",
+                status: status.enable,
+                fkSection: idSection
+            }
+            
+        });
+        if (result.length === 0){
+            logger.warn(`[${context}]: There isn't teacher in this section`)
+            res.status(404).json({
+                resp: "There isn't teacher in this section",
             });
         }
         else
