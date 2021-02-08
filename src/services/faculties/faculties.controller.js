@@ -7,6 +7,9 @@ const School = require("../../database/models/school.model");
 const controller = {};
 const context = "Faculties Controller";
 
+
+
+
 controller.getAll = async (req, res, next) => {
     try {
         logger.info(`[${context}]: Getting all faculties`);

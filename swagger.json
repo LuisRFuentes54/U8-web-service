@@ -1,0 +1,15 @@
+{
+  "swaggerDefinition": {
+    "info": {
+      "version": "1.0.0",
+      "title": "UCAB API",
+      "description": "API de la Unidad 8. Sistemas Distribuidos. UCAB",
+      "contact": {
+        "name": "Luis Fuentes, Carolina Patino , David Monroy",
+        "url": "https://github.com/LuisRFuentes54/U8-web-service.git"
+      }
+    }
+  },
+  "basePath": "/",
+  "apis": ["./services/*/*.routes.js"]
+}

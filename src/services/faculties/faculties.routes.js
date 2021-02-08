@@ -2,6 +2,7 @@ const express = require("express");
 const facultiesController = require("./faculties.controller");
 const router = express.Router();
 
+
 router.get('/', facultiesController.getAll);
 router.get('/:id', facultiesController.getOne);
 router.post('/', facultiesController.create);
