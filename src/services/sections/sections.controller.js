@@ -129,26 +129,18 @@ controller.delete = async (req, res, next) => {
     try {
         const id = req.params.id;
         logger.info(`[${context}]: Deleting section [id:${id}]`);
-        const sectionOut = await section.findOne({
-            where: {
-                id: id,
-                status: status.enable,
-            }
-        });
-        if(!sectionOut){
-            logger.warn(`[${context}]: section not found`)
+        var response = controller.deleteSection (id);
+        if (response == 404){
             res.status(404).json({
                 resp: "section not found",
             });
         }
-        else{
-            sectionOut.status = status.disable;
-            sectionOut.deletedDate = new Date();
-            await sectionOut.save();
+        else {
             res.json({
                 resp: "section deleted",
             });
         }
+        
     } catch (error) {
         next(error)
     }
@@ -275,28 +267,90 @@ controller.deletePerson = async (req, res, next) => {
         const idSection = req.params.ids;
         const idPerson = req.params.idp;
         logger.info(`[${context}]: Deleting person [${idPerson}] in section [${idSection}]`);
-        const actualEnrollment = await enrollment.findOne({
-            where:{
-                fkSection: idSection,
-                fkPerson: idPerson,
-                status: status.enable,
-            }
-        });
-        if(!actualEnrollment){
-            logger.warn(`[${context}]: The person is not registered in the section`);
+        var response = controller.deleteEnrollment (idPerson, idSection);
+        if (response == 404) { 
             res.status(404).json({
                 resp: "The person is not already registered in the section",
             });
         }
-        else{
-            actualEnrollment.status = status.disable;
-            actualEnrollment.deletedDate = new Date();
-            await actualEnrollment.save();
+        else { 
             res.status(200).json({
                 resp: "Person removed from section",
             })
         }
+
+        
     } catch (error) {
+        next(error);
+    }
+};
+
+controller.deleteEnrollment = async (idPerson, idSection) => {
+    try{
+    var response;
+    const actualEnrollment = await enrollment.findOne({
+        where:{
+            fkSection: idSection,
+            fkPerson: idPerson,
+            status: status.enable,
+        }
+    });
+    if(!actualEnrollment){
+        logger.warn(`[${context}]: The person [${idPerson}] is not registered in the section [${idSection}] `);
+        response = 404;
+    }
+    else{
+        actualEnrollment.status = status.disable;
+        actualEnrollment.deletedDate = new Date();
+        await actualEnrollment.save();
+        logger.info(`[${context}]: Has been removed the enrollment to person [${idPerson}] in the section [${idSection}] successfully`);
+        response = 200;
+    }
+    return response;
+    }catch (error) {
+        next(error);
+    }
+};
+
+controller.deleteSection = async (id) => {
+    try{
+    var response;
+    const enrollments = await enrollment.findAll({
+        where: {
+            fkSection: id,
+            status: status.enable
+        }    
+    })
+    if(!enrollments){
+        logger.warn(`[${context}]: enrollments not found in this section`)
+    }
+    else {
+        for (var i = 0; i < enrollments.length; i++){
+            controller.deleteEnrollment (enrollments[i].dataValues.fkPerson, enrollments[i].dataValues.fkSection);
+        }
+    }
+   
+    const sectionOut = await section.findOne({
+        where: {
+            id: id,
+            status: status.enable,
+        }
+    });
+
+    if(!sectionOut){
+        logger.warn(`[${context}]: section not found`)
+        response = 404
+    }
+    else{
+        sectionOut.status = status.disable;
+        sectionOut.deletedDate = new Date();
+        await sectionOut.save();
+        logger.info(`[${context}]: section [${id}] has been deleted succesfully`)
+        response = 202;
+    }
+
+    return response;
+    }catch (error) {
         next(error);
     }
 };

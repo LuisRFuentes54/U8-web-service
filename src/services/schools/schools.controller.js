@@ -1,6 +1,9 @@
 const logger = require("../../utils/logger");
 const school = require("../../database/models/school.model");
 const status = require("../../utils/status");
+const sectionController = require ("../sections/sections.controller");
+const { section } = require("../../utils/types");
+const Section = require("../../database/models/section.model");
 
 const controller = {};
 const context = "Schools Controller";
@@ -63,22 +66,13 @@ controller.delete = async (req, res, next) => {
     try {
         const id = req.params.id;
         logger.info(`[${context}]: Deleting school [id:${id}]`);
-        const schoolOut = await school.findOne({
-            where: {
-                id: id,
-                status: status.enable,
-            }
-        });
-        if(!schoolOut){
-            logger.warn(`[${context}]: school not found`)
+        var response = controller.deleteSchool(id);
+        if (response == 404){ 
             res.status(404).json({
                 resp: "school not found",
             });
         }
-        else{
-            schoolOut.status = status.disable;
-            schoolOut.deletedDate = new Date();
-            await schoolOut.save();
+        else {
             res.json({
                 resp: "school deleted",
             });
@@ -121,5 +115,47 @@ controller.update = async (req, res, next) => {
         next(error)
     }
 };
+
+controller.deleteSchool = async (id) => {
+    try{
+        var response;
+        const sectionsOut = await Section.findAll({
+            where: {
+                fkSchool: id,
+                status: status.enable
+            }
+        });
+        if(!sectionsOut){
+            logger.warn(`[${context}]: seccions not found for this section [${id}] `)
+        }
+        else{
+            for (var i=0; i<sectionsOut.length; i++){
+               sectionController.deleteSection(sectionsOut[i].dataValues.id);
+            } 
+        }
+        
+        const schoolOut = await school.findOne({
+            where: {
+                id: id,
+                status: status.enable,
+            }
+        });
+
+        if(!schoolOut){
+            logger.warn(`[${context}]: school not found`)
+            response = 404;
+        }
+        else{
+            schoolOut.status = status.disable;
+            schoolOut.deletedDate = new Date();
+            await schoolOut.save();
+            logger.info(`[${context}]: school [${id}] has been deleted successfully`)
+            response = 202;
+        }
+        return response; 
+    }catch (error) {
+        next(error)
+    }
+}
 
 module.exports = controller;

@@ -1,6 +1,8 @@
 const logger = require("../../utils/logger");
 const faculty = require("../../database/models/faculty.model");
 const status = require("../../utils/status");
+const schoolController = require ("../schools/schools.controller");
+const School = require("../../database/models/school.model");
 
 const controller = {};
 const context = "Faculties Controller";
@@ -62,22 +64,13 @@ controller.delete = async (req, res, next) => {
     try {
         const id = req.params.id;
         logger.info(`[${context}]: Deleting faculty [id:${id}]`);
-        const facultyOut = await faculty.findOne({
-            where: {
-                id: id,
-                status: status.enable,
-            }
-        });
-        if(!facultyOut){
-            logger.warn(`[${context}]: Faculty not found`)
+        var response = controller.deleteFaculty(id);
+        if (response == 404){
             res.status(404).json({
                 resp: "Faculty not found",
             });
         }
-        else{
-            facultyOut.status = status.disable;
-            facultyOut.deletedDate = new Date();
-            await facultyOut.save();
+        else {
             res.json({
                 resp: "Faculty deleted",
             });
@@ -86,6 +79,48 @@ controller.delete = async (req, res, next) => {
         next(error)
     }
 };
+
+controller.deleteFaculty = async(id) => {
+    try {
+        var response; 
+        const schoolsOut = await School.findAll({
+            where:{
+                fkFaculty:id,
+                status:status.enable
+            }
+        })
+        if(!schoolsOut){
+            logger.warn(`[${context}]: schools not found for this faculty [${id}] `)
+        }
+        else{
+            for (var i=0; i<schoolsOut.length; i++){
+              schoolController.deleteSchool(schoolsOut[i].dataValues.id);
+            } 
+        }
+        const facultyOut = await faculty.findOne({
+            where: {
+                id: id,
+                status: status.enable,
+            }
+        });
+        if(!facultyOut){
+            logger.warn(`[${context}]: Faculty not found`) 
+            response = 404;
+        }
+        else{
+            facultyOut.status = status.disable;
+            facultyOut.deletedDate = new Date();
+            await facultyOut.save();
+            logger.info(`[${context}]: Faculty [${id}] has been deleted successfully`);
+            response = 202;
+        }
+        return response;
+    }
+
+    catch (error){
+        next(error)
+    }
+}
 
 controller.update = async (req, res, next) => {
     try {
